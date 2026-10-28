@@ -1,0 +1,10 @@
+{
+  "country": "mn",
+  "type": "passport-old",
+  "afterprocess": ["splitLine"],
+  "masks": [
+    [20, 20, 200, 260],
+    [210, 40, 580, 310]
+  ],
+  "fields": {}
+}

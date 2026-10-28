@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  mrz-reader:
+    build: .
+    ports:
+      - "5006:5006"
+    environment:
+      - ENVIRONMENT=production
+      - PORT=5006
+      - HOST=0.0.0.0
+      # Memory optimization
+      - PYTHONUNBUFFERED=1
+      - PYTHONDONTWRITEBYTECODE=1
+      - OPENCV_IO_ENABLE_OPENEXR=1
+      - QT_QPA_PLATFORM=offscreen
+    deploy:
+      resources:
+        limits:
+          memory: 4G  # Limit memory usage
+          cpus: '2.0'  # Limit CPU usage
+        reservations:
+          memory: 2G
+          cpus: '1.0'
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5006/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
